@@ -92,3 +92,6 @@ To activate virtual server, I run this command
 
  1. @TODO: Create an endpoint to handle GET requests for all available categories.
  2. @TODO: Create an endpoint to handle GET requests for questions, including pagination (every 10 questions).
+ 3. @TODO: Create an endpoint to DELETE question using a question ID.
+ 4. @TODO: Create an endpoint to POST a new question.
+ 5. @TODO: Create a POST endpoint to get questions based on a search term.

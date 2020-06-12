@@ -88,6 +88,26 @@ def create_app(test_config=None):
   TEST: When you click the trash icon next to a question, the question will be removed.
   This removal will persist in the database and when you refresh the page. 
   '''
+  @app.route('/questions/<int:question_id>', methods = ['DELETE'])
+  def delete_question(question_id):
+    try:
+      question = Question.query.filter(Question.id == question_id).one_or_none()
+      if question_id is None:
+        abort(404)
+      question.delete()
+      selection = Question.query.order_by('id').all()
+      current_questions = paginate(request,selection)
+      return jsonify({
+        'success' : True,
+        'deleted_question' : question_id
+      })
+    except:
+      abort(422)
+
+
+
+
+
 
   '''
   @TODO: 
@@ -99,7 +119,33 @@ def create_app(test_config=None):
   the form will clear and the question will appear at the end of the last page
   of the questions list in the "List" tab.  
   '''
+  @app.route('/questions', methods = ['POST'])
+  def create_question():
+    body = request.get_json()
+    question = body.get('question', None)
+    answer = body.get('answer', None)
+    difficulty = body.get('difficulty', None)
+    category = body.get('category', None)
+    if not question:
+      abort(422)
+    if not answer:
+      abort(422)
+    if not difficulty:
+      abort(422)
+    if not category:
+      abort(422)  
+    try:
+      new_question = Question(question=question,answer=answer,difficulty=difficulty,category=category)
+      new_question.insert()
+      selection = Question.query.order_by('id').all()
+      return jsonify({
+        'success' : True,
+        'total_questions' : len(selection)
+      })
+    except:
+      abort(422)
 
+   
   '''
   @TODO: 
   Create a POST endpoint to get questions based on a search term. 
@@ -110,7 +156,21 @@ def create_app(test_config=None):
   only question that include that string within their question. 
   Try using the word "title" to start. 
   '''
-
+  @app.route('/questions/searchresult', methods=['POST'])
+  def get_specific_question():
+    body = request.get_json()
+    search_term = body.get('searchTerm', None)
+    try:
+      if search_term:
+        selection = Question.query.filter(Question.question.ilike('%{}%'.format(search_term))).all()
+        search_result = [question.format() for question in selection]
+        return jsonify({
+          'success' : True,
+          'questions' : search_result,
+          'total_questions' : len(selection)
+        })
+    except:
+      abort(422)
   '''
   @TODO: 
   Create a GET endpoint to get questions based on category. 
