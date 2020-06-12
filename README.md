@@ -54,8 +54,8 @@ To activate virtual server, I run this command
     
     $ pip3 install -r requirements.txt
     
-    $ dropdb trivia && createdb trivia
-    
+    $ dropdb trivia 
+    $ createdb trivia -O suliman
     $ psql trivia < trivia.psql
     
     $ export FLASK_APP=flaskr
@@ -66,19 +66,29 @@ To activate virtual server, I run this command
 
    **This will start the backend server** 
 
-## Step 3 edit "__init __.py" in flaskr folder
+ ## Step 3 edit models.py
+
+ - Setup the database connection
+
+> database_path = "postgres://{}/{}".format('suliman@localhost:5432',
+> database_name)
+
+ ## Step 3 edit "__init __.py" in flaskr folder
  
 
- 1. @TODO: Set up CORS
+ - Set up CORS
 
 > 	    CORS(app)
 
 	
 
- 2. @TODO: Use the after_request decorator to set Access-Control-Allow
+ - @TODO: Use the after_request decorator to set Access-Control-Allow
 
 >     @app.after_request
 >         def  after_request(response):
 >         response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization, true')
 >         response.headers.add('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS')
 >         return response
+
+ 1. @TODO: Create an endpoint to handle GET requests for all available categories.
+ 2. @TODO: Create an endpoint to handle GET requests for questions, including pagination (every 10 questions).
