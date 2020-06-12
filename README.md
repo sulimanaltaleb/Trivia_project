@@ -90,8 +90,12 @@ To activate virtual server, I run this command
 >         response.headers.add('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS')
 >         return response
 
+
  1. @TODO: Create an endpoint to handle GET requests for all available categories.
  2. @TODO: Create an endpoint to handle GET requests for questions, including pagination (every 10 questions).
  3. @TODO: Create an endpoint to DELETE question using a question ID.
  4. @TODO: Create an endpoint to POST a new question.
  5. @TODO: Create a POST endpoint to get questions based on a search term.
+ 6. @TODO: Create a GET endpoint to get questions based on category.
+ 7. @TODO: Create a POST endpoint to get questions to play the quiz.
+ 8. @TODO: Create error handlers for all expected errors including 404 and 422.
