@@ -65,3 +65,20 @@ To activate virtual server, I run this command
     $ flask run
 
    **This will start the backend server** 
+
+## Step 3 edit "__init __.py" in flaskr folder
+ 
+
+ 1. @TODO: Set up CORS
+
+> 	    CORS(app)
+
+	
+
+ 2. @TODO: Use the after_request decorator to set Access-Control-Allow
+
+>     @app.after_request
+>         def  after_request(response):
+>         response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization, true')
+>         response.headers.add('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS')
+>         return response
