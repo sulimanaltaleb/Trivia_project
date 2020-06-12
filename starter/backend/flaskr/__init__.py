@@ -179,6 +179,19 @@ def create_app(test_config=None):
   categories in the left column will cause only questions of that 
   category to be shown. 
   '''
+  @app.route('/categories/<int:category_id>/questions')
+  def category_questions(category_id):
+    try:
+      selection = Question.query.filter(Question.category == str(category_id)).all()
+      category_questions = [question.format() for question in selection]
+      return jsonify({
+        'success' : True,
+        'questions' : category_questions,
+        'total_questions' : len(selection),
+        'category' : category_id
+      })
+    except:
+      abort(404)  
 
 
   '''
@@ -192,7 +205,31 @@ def create_app(test_config=None):
   one question at a time is displayed, the user is allowed to answer
   and shown whether they were correct or not. 
   '''
-
+  @app.route('/quizzes', methods= ['POST'])
+  def quiz():
+    try:
+      body = request.get_json()
+      quiz_category = body.get('quiz_category')
+      previous_questions = body.get('previous_questions')
+      if(not 'quiz_category' in body and not 'previous_questions' in body):
+        abort(422)
+      if(quiz_category['id']):
+        questions = Question.query.filter_by(category = quiz_category['id']).filter(Question.id.notin_(previous_questions)).all()
+      else:
+        questions = Question.query.filter(Question.id.notin_(previous_questions)).all()
+      if len(questions) > 0:
+        generate_question = questions[random.randrange(0,len(questions))].format()
+        return jsonify({
+          'success' : True,
+          'question' : generate_question
+        })  
+      else:
+        return jsonify({
+          'success' :True,
+          'question' : None
+        })
+    except:
+      abort(422)
   '''
   @TODO: 
   Create error handlers for all expected errors 
